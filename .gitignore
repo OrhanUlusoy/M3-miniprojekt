@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+*.egg-info/
+
+# Envs
+.venv/
+venv/
+.env
+.env.*
+
+# OS/Editor
+.vscode/
+
+# Model artifacts (keep folder, ignore binaries)
+artifacts/*.onnx
+artifacts/*.pt
+artifacts/*.pth
+artifacts/*.ts

@@ -1,0 +1,13 @@
+.git
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.venv
+venv
+.env
+.env.*
+artifacts/*.onnx
+artifacts/*.pt
+artifacts/*.pth
+artifacts/*.ts

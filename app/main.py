@@ -5,6 +5,13 @@ from app.schemas import PredictRequest, PredictResponse
 app = FastAPI(title="CIFAR-10 Classifier")
 
 
+@app.get("/health")
+def health_check():
+    # Enkel health-check så man kan se att servern lever
+    # Bra att ha när man kör i Docker / bakom en load balancer
+    return {"status": "ok"}
+
+
 @app.post("/predict", response_model=PredictResponse)
 def predict_endpoint(payload: PredictRequest):
     # Skicka bilden genom modellen och få tillbaka klass + konfidens

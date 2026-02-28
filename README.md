@@ -72,5 +72,5 @@ TorchScript valdes framför ONNX mest för att det var enklast — modellen kund
 En sak jag hade gjort annorlunda är att spara vikterna i Lab2 redan från början, nu fick jag exportera med slumpmässiga vikter eftersom tränade vikter inte sparades till disk i det projektet.
 
 ## Pull Requests
-- PR 1: <länk>
-- PR 2: <länk>
+- PR 1: https://github.com/OrhanUlusoy/M3-miniprojekt/pull/1
+- PR 2: https://github.com/OrhanUlusoy/M3-miniprojekt/pull/2

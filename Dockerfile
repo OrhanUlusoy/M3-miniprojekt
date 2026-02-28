@@ -6,8 +6,9 @@ WORKDIR /app
 RUN pip install --no-cache-dir uv
 
 # Kopiera in requirements och installera allt
-COPY requirements.txt ./requirements.txt
-RUN uv pip install --system --no-cache -r requirements.txt
+# Använder requirements-docker.txt med CPU-only torch (mycket mindre image)
+COPY requirements-docker.txt ./requirements-docker.txt
+RUN uv pip install --system --no-cache -r requirements-docker.txt
 
 # Kopiera resten av projektet
 COPY . .

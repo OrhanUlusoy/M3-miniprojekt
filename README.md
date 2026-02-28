@@ -48,6 +48,29 @@ docker run --rm -p 8000:8000 m3-miniprojekt
 python scripts/smoke_test.py
 ```
 
+## Projektstruktur
+
+```
+app/
+  main.py          # FastAPI-app med /predict-endpoint
+  inference.py     # Bildförbehandling + inferens
+  model.py         # Modelldefinition (SimpleCNN) + laddning av TorchScript
+  schemas.py       # Request/response-modeller (Pydantic)
+scripts/
+  export_torchscript.py   # Exporterar modellen till TorchScript
+  smoke_test.py           # Snabbtest som verifierar att API:t svarar
+artifacts/
+  model.ts         # Exporterad TorchScript-modell (genereras, versionshanteras ej)
+```
+
+## Reflektioner
+
+Modellen är en ganska enkel CNN med bara två conv-lager, så träffsäkerheten på CIFAR-10 hamnar runt 60-65%. Det räcker för att visa att pipeline:n fungerar, men i ett riktigt projekt hade man velat använda en djupare arkitektur (t.ex. ResNet) eller åtminstone data augmentation.
+
+TorchScript valdes framför ONNX mest för att det var enklast — modellen kunde scripta:s direkt utan problem. ONNX hade varit bättre om man ville köra inferens utan PyTorch (t.ex. med ONNX Runtime), men det behövdes inte här.
+
+En sak jag hade gjort annorlunda är att spara vikterna i Lab2 redan från början, nu fick jag exportera med slumpmässiga vikter eftersom tränade vikter inte sparades till disk i det projektet.
+
 ## Pull Requests
 - PR 1: <länk>
 - PR 2: <länk>

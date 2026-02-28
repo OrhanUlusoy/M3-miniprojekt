@@ -8,6 +8,9 @@ from PIL import Image
 
 from app.model import get_model, CIFAR10_CLASSES
 
+# Max storlek vi accepterar (5 MB) — skyddar mot att någon skickar jättestora payloads
+MAX_IMAGE_BYTES = 5 * 1024 * 1024
+
 # Förbehandling: skala bilden till 32x32 (CIFAR-10-storlek) och konvertera till tensor
 preprocess = transforms.Compose([
     transforms.Resize((32, 32)),
@@ -16,9 +19,25 @@ preprocess = transforms.Compose([
 
 
 def predict(image_base64):
-    # Avkoda base64-strängen till en PIL-bild
-    raw_bytes = base64.b64decode(image_base64)
-    image = Image.open(io.BytesIO(raw_bytes)).convert("RGB")
+    # Kolla att base64-strängen inte är tom
+    if not image_base64 or not image_base64.strip():
+        raise ValueError("Bilden saknas — skicka med en base64-kodad bild")
+
+    # Avkoda base64 till bytes
+    try:
+        raw_bytes = base64.b64decode(image_base64)
+    except Exception:
+        raise ValueError("Ogiltig base64-sträng — kunde inte avkoda")
+
+    # Kolla storlek
+    if len(raw_bytes) > MAX_IMAGE_BYTES:
+        raise ValueError(f"Bilden är för stor ({len(raw_bytes)} bytes, max {MAX_IMAGE_BYTES})")
+
+    # Försök öppna som bild
+    try:
+        image = Image.open(io.BytesIO(raw_bytes)).convert("RGB")
+    except Exception:
+        raise ValueError("Kunde inte läsa bilden — kolla att det är en giltig PNG/JPEG")
 
     # Gör om bilden till en tensor med rätt shape för modellen
     tensor = preprocess(image).unsqueeze(0)  # lägg till batch-dimension -> (1, 3, 32, 32)

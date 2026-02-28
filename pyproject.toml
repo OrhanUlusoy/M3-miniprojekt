@@ -8,6 +8,8 @@ dependencies = [
   "fastapi>=0.110",
   "uvicorn[standard]>=0.27",
   "torch>=2.2",
+  "torchvision>=0.17",
+  "Pillow>=10.0",
 ]
 
 [tool.uv]

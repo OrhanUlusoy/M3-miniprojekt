@@ -1,7 +1,7 @@
 [project]
 name = "m3-miniprojekt"
 version = "0.1.0"
-description = "FastAPI API som exponerar en exporterad PyTorch-modell (TorchScript/ONNX)"
+description = "CIFAR-10-klassificerare med FastAPI och TorchScript"
 readme = "README.md"
 requires-python = ">=3.11,<3.13"
 dependencies = [
@@ -11,6 +11,3 @@ dependencies = [
   "torchvision>=0.17",
   "Pillow>=10.0",
 ]
-
-[tool.uv]
-# Lämna tomt tills ni väljer exakt workflow (uv sync/lock etc)

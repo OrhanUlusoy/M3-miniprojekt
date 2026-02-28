@@ -1,13 +1,13 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
+# Request-body för /predict
 class PredictRequest(BaseModel):
-    image_base64: str = Field(
-        ..., description="Base64-kodad bild (PNG/JPEG). Skalas till 32x32 av API:t."
-    )
+    image_base64: str  # base64-kodad PNG eller JPEG
 
 
+# Svar från /predict
 class PredictResponse(BaseModel):
-    prediction: str = Field(..., description="Förutsagd CIFAR-10-klass, t.ex. 'cat'.")
-    class_index: int = Field(..., description="Klassindex (0-9).")
-    confidence: float = Field(..., description="Softmax-konfidens för den förutsagda klassen.")
+    prediction: str     # t.ex. "cat", "ship" osv
+    class_index: int    # 0-9 (index i CIFAR-10)
+    confidence: float   # sannolikhet (softmax) för den valda klassen

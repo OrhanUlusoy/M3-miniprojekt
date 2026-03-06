@@ -29,10 +29,16 @@ Skicka en base64-kodad bild och få tillbaka vilken klass modellen tror det är:
 uv sync
 
 # Exportera modellen till TorchScript
-python scripts/export_torchscript.py
+uv run python scripts/export_torchscript.py
 
 # Starta servern
-uvicorn app.main:app --reload
+uv run uvicorn app.main:app --reload
+```
+
+Om du inte använder `uv run` (t.ex. om `python` råkar peka på system-Python) kan du på Windows köra med venv:ens Python direkt:
+
+```bash
+./.venv/Scripts/python scripts/smoke_test.py
 ```
 
 ## Docker
@@ -42,11 +48,40 @@ docker build -t m3-miniprojekt .
 docker run --rm -p 8000:8000 m3-miniprojekt
 ```
 
+Om du får fel som `failed to connect to the docker API ... dockerDesktopLinuxEngine` betyder det nästan alltid att Docker Desktop/daemonen inte är igång eller att fel Docker-engine är vald. Starta Docker Desktop och försök igen (ev. byt engine/context).
+
 ## Testa att det funkar
 
 ```bash
-python scripts/smoke_test.py
+uv run python scripts/smoke_test.py
 ```
+
+## Inlämningschecklista (för rättning)
+
+- **Container bygger och startar**
+
+```bash
+docker build -t m3-miniprojekt .
+docker run --rm -p 8000:8000 m3-miniprojekt
+```
+
+Öppna sedan t.ex. `http://localhost:8000/health` och verifiera att du får `{"status":"ok"}`.
+
+- **API svarar på POST /predict**
+
+Exempel (PowerShell):
+
+```powershell
+$imgB64 = [Convert]::ToBase64String([IO.File]::ReadAllBytes(".\path\to\image.png"))
+$body = @{ image_base64 = $imgB64 } | ConvertTo-Json
+Invoke-RestMethod -Method Post -Uri http://localhost:8000/predict -ContentType application/json -Body $body
+```
+
+Svaret ska innehålla `prediction` (klass-etikett), `class_index` (0–9) och `confidence`.
+
+- **README innehåller länkar till minst två PRs med code review**
+
+Se länkarna under “Pull Requests” nedan och säkerställ att code review/kommentarer/approval syns i PR:erna på GitHub.
 
 ## Projektstruktur
 
